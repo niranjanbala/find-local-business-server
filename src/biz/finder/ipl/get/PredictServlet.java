@@ -24,8 +24,7 @@ public class PredictServlet extends HttpServlet {
 			throws IOException {
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		for(int i=1;i<=10;i++) {
-			String param=req.getParameter("param"+i);
-			resp.getWriter().println(param);
+			req.getParameter("param"+i);
 		}
 		resp.setContentType("text/json; charset=utf-8");
 		resp.setHeader("Cache-Control", "no-cache");		
