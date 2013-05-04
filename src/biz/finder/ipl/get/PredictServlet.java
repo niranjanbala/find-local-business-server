@@ -54,9 +54,13 @@ public class PredictServlet extends HttpServlet {
 		}
 		int points;
 		for (String winner : userPredictions.values()) {
+			try {
 			Team winnerTeam = Team.valueOf(winner);
 			points = ((Integer) pointTableMap.get(winnerTeam)).intValue();
 			pointTableMap.put(winnerTeam, Integer.valueOf(points + 2));
+			}catch(Exception e) {
+				//eat
+			}
 		}
 		Map<Integer,Team[]> matches = new HashMap<Integer,Team[]>();
 		int index = 0;

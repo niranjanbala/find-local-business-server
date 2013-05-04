@@ -16,150 +16,238 @@
 Ext.define('MyApp.view.LandingPage', {
     extend: 'Ext.container.Viewport',
 
+    style: '{background-color : gray}',
+    autoScroll: true,
+    layout: {
+        align: 'stretch',
+        type: 'vbox'
+    },
+
     initComponent: function() {
         var me = this;
 
         Ext.applyIf(me, {
             items: [
                 {
-                    xtype: 'gridpanel',
-                    height: 250,
-                    id: 'pointsTable',
-                    title: 'IPL 2013 Points Table',
-                    store: 'PointsTableStore',
-                    viewConfig: {
-
+                    xtype: 'panel',
+                    border: 0,
+                    height: 640,
+                    minHeight: 400,
+                    minWidth: 400,
+                    style: '{background-color : gray}',
+                    layout: {
+                        align: 'stretch',
+                        type: 'hbox'
                     },
-                    columns: [
+                    bodyBorder: false,
+                    items: [
                         {
-                            xtype: 'gridcolumn',
-                            dataIndex: 'teamName',
-                            text: 'TeamName'
-                        },
-                        {
-                            xtype: 'numbercolumn',
-                            dataIndex: 'matches',
-                            text: 'Matches'
-                        },
-                        {
-                            xtype: 'numbercolumn',
-                            dataIndex: 'won',
-                            text: 'Won'
-                        },
-                        {
-                            xtype: 'numbercolumn',
-                            dataIndex: 'lost',
-                            text: 'Lost'
-                        },
-                        {
-                            xtype: 'numbercolumn',
-                            dataIndex: 'nr',
-                            text: 'Nr'
-                        },
-                        {
-                            xtype: 'numbercolumn',
-                            dataIndex: 'netrr',
-                            text: 'Netrr'
-                        },
-                        {
-                            xtype: 'numbercolumn',
-                            dataIndex: 'tied',
-                            text: 'Tied'
-                        },
-                        {
-                            xtype: 'numbercolumn',
-                            dataIndex: 'points',
-                            text: 'Points'
-                        },
-                        {
-                            xtype: 'numbercolumn',
-                            dataIndex: 'forOver',
-                            text: 'ForOver'
-                        },
-                        {
-                            xtype: 'numbercolumn',
-                            dataIndex: 'forRuns',
-                            text: 'ForRuns'
-                        },
-                        {
-                            xtype: 'numbercolumn',
-                            dataIndex: 'againstOver',
-                            text: 'AgainstOver'
-                        },
-                        {
-                            xtype: 'numbercolumn',
-                            dataIndex: 'againstRuns',
-                            text: 'AgainstRuns'
-                        },
-                        {
-                            xtype: 'numbercolumn',
-                            dataIndex: 'chances',
-                            text: 'Chances'
-                        }
-                    ]
-                },
-                {
-                    xtype: 'gridpanel',
-                    height: 320,
-                    id: 'upcomingFixtures',
-                    title: 'Upcoming Fixtures',
-                    store: 'FixturesTableStore',
-                    viewConfig: {
+                            xtype: 'gridpanel',
+                            border: 0,
+                            height: 640,
+                            id: 'pointsTable',
+                            maxWidth: 640,
+                            minHeight: 400,
+                            minWidth: 400,
+                            autoScroll: true,
+                            title: 'IPL 2013 Points Table',
+                            store: 'PointsTableStore',
+                            viewConfig: {
 
-                    },
-                    columns: [
-                        {
-                            xtype: 'gridcolumn',
-                            width: 197,
-                            dataIndex: 'team1',
-                            text: 'Team1'
-                        },
-                        {
-                            xtype: 'gridcolumn',
-                            width: 199,
-                            dataIndex: 'team2',
-                            text: 'Team2'
-                        },
-                        {
-                            xtype: 'gridcolumn',
-                            width: 157,
-                            dataIndex: 'winner',
-                            text: 'Winner',
-                            editor: {
-                                xtype: 'combobox',
-                                store: [
-                                    
-                                ]
-                            }
-                        }
-                    ],
-                    plugins: [
-                        Ext.create('Ext.grid.plugin.CellEditing', {
-                            ptype: 'cellediting',
-                            listeners: {
-                                beforeedit: {
-                                    fn: me.onGridcelleditingpluginBeforeEdit,
-                                    scope: me
+                            },
+                            columns: [
+                                {
+                                    xtype: 'gridcolumn',
+                                    renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                        var imgFilename="http://find-business.appspot.com/ipl/logos/"+value+".png";
+                                        return "<img src=\""+imgFilename+"\" />";
+                                    },
+                                    width: 99,
+                                    dataIndex: 'teamName',
+                                    text: 'Logo'
+                                },
+                                {
+                                    xtype: 'gridcolumn',
+                                    width: 161,
+                                    dataIndex: 'teamName',
+                                    text: 'TeamName'
+                                },
+                                {
+                                    xtype: 'numbercolumn',
+                                    width: 52,
+                                    dataIndex: 'matches',
+                                    text: 'Matches'
+                                },
+                                {
+                                    xtype: 'numbercolumn',
+                                    width: 37,
+                                    dataIndex: 'won',
+                                    text: 'Won'
+                                },
+                                {
+                                    xtype: 'numbercolumn',
+                                    width: 41,
+                                    dataIndex: 'lost',
+                                    text: 'Lost'
+                                },
+                                {
+                                    xtype: 'numbercolumn',
+                                    width: 38,
+                                    dataIndex: 'nr',
+                                    text: 'Nr'
+                                },
+                                {
+                                    xtype: 'numbercolumn',
+                                    width: 51,
+                                    dataIndex: 'netrr',
+                                    text: 'Netrr'
+                                },
+                                {
+                                    xtype: 'numbercolumn',
+                                    width: 44,
+                                    dataIndex: 'tied',
+                                    text: 'Tied'
+                                },
+                                {
+                                    xtype: 'numbercolumn',
+                                    width: 44,
+                                    dataIndex: 'points',
+                                    text: 'Points'
+                                },
+                                {
+                                    xtype: 'numbercolumn',
+                                    hidden: true,
+                                    width: 53,
+                                    dataIndex: 'forOver',
+                                    text: 'ForOver'
+                                },
+                                {
+                                    xtype: 'numbercolumn',
+                                    hidden: true,
+                                    dataIndex: 'forRuns',
+                                    text: 'ForRuns'
+                                },
+                                {
+                                    xtype: 'numbercolumn',
+                                    hidden: true,
+                                    dataIndex: 'againstOver',
+                                    text: 'AgainstOver'
+                                },
+                                {
+                                    xtype: 'numbercolumn',
+                                    hidden: true,
+                                    dataIndex: 'againstRuns',
+                                    text: 'AgainstRuns'
+                                },
+                                {
+                                    xtype: 'numbercolumn',
+                                    width: 57,
+                                    dataIndex: 'chances',
+                                    text: 'Chances'
                                 }
-                            }
-                        })
-                    ]
-                },
-                {
-                    xtype: 'label',
-                    padding: '0 50 0  10',
-                    text: 'Press this button to Predict'
-                },
-                {
-                    xtype: 'button',
-                    height: 19,
-                    text: 'Run Predictor',
-                    listeners: {
-                        click: {
-                            fn: me.onButtonClick,
-                            scope: me
+                            ]
+                        },
+                        {
+                            xtype: 'gridpanel',
+                            id: 'upcomingFixtures',
+                            maxWidth: 360,
+                            minHeight: 400,
+                            minWidth: 360,
+                            autoScroll: true,
+                            title: 'Upcoming Fixtures',
+                            store: 'FixturesTableStore',
+                            viewConfig: {
+
+                            },
+                            columns: [
+                                {
+                                    xtype: 'gridcolumn',
+                                    renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                        var imgFilename="http://find-business.appspot.com/ipl/logos/"+value+".png";
+                                        return "<img src=\""+imgFilename+"\" />";
+                                    },
+                                    width: 100,
+                                    dataIndex: 'team1',
+                                    text: 'Team1'
+                                },
+                                {
+                                    xtype: 'gridcolumn',
+                                    renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                                        var imgFilename="http://find-business.appspot.com/ipl/logos/"+value+".png";
+                                        return "<img src=\""+imgFilename+"\" />";
+                                    },
+                                    width: 100,
+                                    dataIndex: 'team2',
+                                    text: 'Team2'
+                                },
+                                {
+                                    xtype: 'gridcolumn',
+                                    width: 160,
+                                    dataIndex: 'winner',
+                                    emptyCellText: '<b>Double Click to Select</b>',
+                                    text: 'Choose Winner',
+                                    editor: {
+                                        xtype: 'combobox',
+                                        store: [
+                                            
+                                        ]
+                                    }
+                                }
+                            ],
+                            plugins: [
+                                Ext.create('Ext.grid.plugin.CellEditing', {
+                                    ptype: 'cellediting',
+                                    listeners: {
+                                        beforeedit: {
+                                            fn: me.onGridcelleditingpluginBeforeEdit,
+                                            scope: me
+                                        }
+                                    }
+                                })
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            flex: 1,
+                            border: 0,
+                            minHeight: 400,
+                            style: '{background-color : gray}',
+                            autoScroll: true,
+                            layout: {
+                                align: 'stretch',
+                                type: 'vbox'
+                            },
+                            title: 'Action',
+                            items: [
+                                {
+                                    xtype: 'button',
+                                    height: 29,
+                                    maxWidth: 1024,
+                                    width: 269,
+                                    text: 'Run Predictor',
+                                    listeners: {
+                                        click: {
+                                            fn: me.onButtonClick,
+                                            scope: me
+                                        }
+                                    }
+                                },
+                                {
+                                    xtype: 'button',
+                                    height: 29,
+                                    maxWidth: 1024,
+                                    width: 269,
+                                    text: 'Clear Predictions',
+                                    listeners: {
+                                        click: {
+                                            fn: me.onButtonClick1,
+                                            scope: me
+                                        }
+                                    }
+                                }
+                            ]
                         }
-                    }
+                    ]
                 }
             ]
         });
@@ -204,6 +292,13 @@ Ext.define('MyApp.view.LandingPage', {
             }
         });
         store.load({params: formParamsIn});
+    },
+
+    onButtonClick1: function(button, e, options) {
+        var grid=Ext.ComponentQuery.query('#pointsTable')[0];
+        grid.getStore().load();
+        var grid2=Ext.ComponentQuery.query('#upcomingFixtures')[0];
+        grid2.getStore().load();
     }
 
 });
