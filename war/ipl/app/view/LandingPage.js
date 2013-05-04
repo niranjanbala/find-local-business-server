@@ -298,6 +298,13 @@ Ext.define('MyApp.view.LandingPage', {
         var grid=Ext.ComponentQuery.query('#pointsTable')[0];
         grid.getStore().load();
         var grid2=Ext.ComponentQuery.query('#upcomingFixtures')[0];
+        grid2.getStore().setProxy({
+            type: 'ajax',
+            url: 'http://find-business.appspot.com/ipl/list?kind=Fixtures',
+            reader: {
+                type: 'json'
+            }
+        });
         grid2.getStore().load();
     }
 
