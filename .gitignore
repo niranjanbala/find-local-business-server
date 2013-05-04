@@ -1,0 +1,10 @@
+#################
+## Eclipse
+#################
+
+*.pydevproject
+.project
+.metadata
+bin/
+tmp/
+war/WEB-INF/classes

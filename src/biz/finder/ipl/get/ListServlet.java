@@ -31,13 +31,13 @@ public class ListServlet extends HttpServlet {
 		String kind = req.getParameter("kind");
 		if (kind.equals(PointsTableEntityProvider.POINTS_TABLE)) {
 			IEntityProvider entityProvider = new PointsTableEntityProvider();
-			List<Entity> entities = entityProvider.findAll(datastore,null);
+			List<Entity> entities = entityProvider.findAll(datastore,null,10);
 			resp.getWriter().println(Util.writeJSON(entities));
 		}
 		else {
 			IEntityProvider entityProvider = new FixturesEntityProvider();
 			List<Entity> entities=entityProvider.findAll(datastore,(new FilterPredicate("status",
-					FilterOperator.EQUAL, "PENDING")));
+					FilterOperator.EQUAL, "PENDING")),10);
 			Util.writeJSON(entities);
 			resp.getWriter().println(Util.writeJSON(entities));
 		}

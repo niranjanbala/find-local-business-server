@@ -4,13 +4,11 @@ import java.util.List;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query;
 
-public interface IEntityProvider {
+public abstract interface IEntityProvider
+{
+  public abstract List<Entity> preparePointsTableEntityCollection(String paramString, DatastoreService paramDatastoreService);
 
-	List<Entity> preparePointsTableEntityCollection(String resultString,
-			DatastoreService datastore);
-
-	List<Entity> findAll(DatastoreService datastore,Filter filter);
-
+  public abstract List<Entity> findAll(DatastoreService paramDatastoreService, Query.Filter paramFilter, int paramInt);
 }

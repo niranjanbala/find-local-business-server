@@ -6,16 +6,17 @@ import java.util.Scanner;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.Query.FilterOperator;
-import com.google.appengine.api.datastore.Query.FilterPredicate;
 
 public class PointsTableEntityProvider extends AbstractEntityProvider {
 	public static final String POINTS_TABLE = "PointsTable";
+
 	@Override
 	protected String getKind() {
 		return POINTS_TABLE;
 	}
-	protected Entity prepareEntity(DatastoreService datastore, String line) {
+
+	protected Entity prepareEntity(DatastoreService datastore, String line,
+			int index) {
 		String[] result = line.split(",");
 		Team team = Team.Chennai_Super_Kings;
 		team = Team.valueOf(result[0].replace(" ", "_"));
@@ -32,36 +33,37 @@ public class PointsTableEntityProvider extends AbstractEntityProvider {
 		float forOver = resultInfo.nextFloat();
 		int againstRuns = resultInfo.nextInt();
 		float againstOvers = resultInfo.nextFloat();
-		PointTable pointTable = new PointTable(team.name(), matches,
-				won, lost, tied, nr, points, netrr, forRuns, forOver,
-				againstRuns, againstOvers);
-		Entity pointTableRow = datastore
-				.prepare(
-						new Query(getKind())
-								.setFilter(new FilterPredicate(
-										"teamName",
-										FilterOperator.EQUAL, team
-												.name())))
+		PointTable pointTable = new PointTable(team.name(), matches, won, lost,
+				tied, nr, points, netrr, forRuns, forOver, againstRuns,
+				againstOvers);
+		Entity pointTableRow = datastore.prepare(
+				new Query(getKind()).setFilter(new Query.FilterPredicate(
+						"teamName", Query.FilterOperator.EQUAL, team.name())))
 				.asSingleEntity();
 		if (pointTableRow == null) {
 			pointTableRow = new Entity(getKind());
 		}
 		pointTableRow.setProperty("teamName", pointTable.getTeamName());
-		pointTableRow.setProperty("matches", pointTable.getMatches());
-		pointTableRow.setProperty("won", pointTable.getWon());
-		pointTableRow.setProperty("points", pointTable.getPoints());
-		pointTableRow.setProperty("lost", pointTable.getLost());
-		pointTableRow.setProperty("tied", pointTable.getTied());
-		pointTableRow.setProperty("nr", pointTable.getNr());
-		pointTableRow.setProperty("netrr", pointTable.getNetrr());
-		pointTableRow.setProperty("forOver", new DecimalFormat("#.0")
-				.format(pointTable.getForOver()));
-		pointTableRow.setProperty("forRuns", pointTable.getForRuns());
+		pointTableRow.setProperty("matches",
+				Integer.valueOf(pointTable.getMatches()));
+		pointTableRow.setProperty("won", Integer.valueOf(pointTable.getWon()));
+		pointTableRow.setProperty("points",
+				Integer.valueOf(pointTable.getPoints()));
+		pointTableRow
+				.setProperty("lost", Integer.valueOf(pointTable.getLost()));
+		pointTableRow
+				.setProperty("tied", Integer.valueOf(pointTable.getTied()));
+		pointTableRow.setProperty("nr", Integer.valueOf(pointTable.getNr()));
+		pointTableRow
+				.setProperty("netrr", Float.valueOf(pointTable.getNetrr()));
+		pointTableRow.setProperty("forOver",
+				new DecimalFormat("#.0").format(pointTable.getForOver()));
+		pointTableRow.setProperty("forRuns",
+				Integer.valueOf(pointTable.getForRuns()));
 		pointTableRow.setProperty("againstRuns",
-				pointTable.getAgainstRuns());
-		pointTableRow.setProperty("againstOver", new DecimalFormat(
-				"#.0").format(pointTable.getAgainstOvers()));
+				Integer.valueOf(pointTable.getAgainstRuns()));
+		pointTableRow.setProperty("againstOver",
+				new DecimalFormat("#.0").format(pointTable.getAgainstOvers()));
 		return pointTableRow;
 	}
-
 }
