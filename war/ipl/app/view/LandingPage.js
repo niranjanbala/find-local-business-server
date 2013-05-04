@@ -186,7 +186,7 @@ Ext.define('MyApp.view.LandingPage', {
             formParamsIn=formParamsIn+param;    
         });
 
-        var store=Ext.create("MyApp.store.PointsTableStore",{autoLoad:true});
+        var store=Ext.create("MyApp.store.PointsTableStore",{autoLoad:false});
         store.setProxy({
             type: 'rest',
             api: {
