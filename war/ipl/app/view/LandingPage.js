@@ -49,7 +49,7 @@ Ext.define('MyApp.view.LandingPage', {
                                 {
                                     xtype: 'gridcolumn',
                                     renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                                        var imgFilename="http://find-business.appspot.com/ipl/logos/"+value+".png";
+                                        var imgFilename="http://find-business.appspot.com/ipl/logos/small/"+value+".png";
                                         return "<img src=\""+imgFilename+"\" />";
                                     },
                                     width: 55,
@@ -152,7 +152,7 @@ Ext.define('MyApp.view.LandingPage', {
                                 {
                                     xtype: 'gridcolumn',
                                     renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                                        var imgFilename="http://find-business.appspot.com/ipl/logos/"+value+".png";
+                                        var imgFilename="http://find-business.appspot.com/ipl/logos/small/"+value+".png";
                                         return "<img src=\""+imgFilename+"\" />";
                                     },
                                     width: 55,
@@ -162,7 +162,7 @@ Ext.define('MyApp.view.LandingPage', {
                                 {
                                     xtype: 'gridcolumn',
                                     renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                                        var imgFilename="http://find-business.appspot.com/ipl/logos/"+value+".png";
+                                        var imgFilename="http://find-business.appspot.com/ipl/logos/small/"+value+".png";
                                         return "<img src=\""+imgFilename+"\" />";
                                     },
                                     width: 55,
@@ -197,6 +197,7 @@ Ext.define('MyApp.view.LandingPage', {
                             tools: [
                                 {
                                     xtype: 'tool',
+                                    tooltip: 'Click to Run Analysis',
                                     type: 'gear',
                                     listeners: {
                                         click: {
@@ -207,6 +208,7 @@ Ext.define('MyApp.view.LandingPage', {
                                 },
                                 {
                                     xtype: 'tool',
+                                    tooltip: 'Clear Previous Analysis',
                                     type: 'toggle',
                                     listeners: {
                                         click: {
@@ -217,6 +219,7 @@ Ext.define('MyApp.view.LandingPage', {
                                 },
                                 {
                                     xtype: 'tool',
+                                    tooltip: 'Help',
                                     type: 'help',
                                     listeners: {
                                         click: {
@@ -278,6 +281,11 @@ Ext.define('MyApp.view.LandingPage', {
             Ext.MessageBox.hide();
         });
         if(selectedCount<4) {    
+            Ext.MessageBox.show({
+                msg: 'Please select atleast 5 results ',        
+                width:300
+            });
+
             return;
         }    
         Ext.MessageBox.show({
