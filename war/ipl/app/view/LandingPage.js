@@ -281,11 +281,7 @@ Ext.define('MyApp.view.LandingPage', {
             Ext.MessageBox.hide();
         });
         if(selectedCount<4) {    
-            Ext.MessageBox.show({
-                msg: 'Please select atleast 5 results ',        
-                width:300
-            });
-
+            Ext.Msg.alert('Information', 'Please select atleast 5 result');
             return;
         }    
         Ext.MessageBox.show({
