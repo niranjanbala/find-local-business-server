@@ -18,10 +18,6 @@ Ext.define('MyApp.view.LandingPage', {
 
     style: '{background-color : gray}',
     autoScroll: true,
-    layout: {
-        align: 'stretch',
-        type: 'vbox'
-    },
 
     initComponent: function() {
         var me = this;
@@ -31,10 +27,8 @@ Ext.define('MyApp.view.LandingPage', {
                 {
                     xtype: 'panel',
                     border: 0,
-                    height: 640,
-                    minHeight: 400,
-                    minWidth: 400,
                     style: '{background-color : gray}',
+                    autoScroll: true,
                     layout: {
                         align: 'stretch',
                         type: 'hbox'
@@ -44,11 +38,7 @@ Ext.define('MyApp.view.LandingPage', {
                         {
                             xtype: 'gridpanel',
                             border: 0,
-                            height: 640,
                             id: 'pointsTable',
-                            maxWidth: 640,
-                            minHeight: 400,
-                            minWidth: 400,
                             autoScroll: true,
                             title: 'IPL 2013 Points Table',
                             store: 'PointsTableStore',
@@ -62,19 +52,19 @@ Ext.define('MyApp.view.LandingPage', {
                                         var imgFilename="http://find-business.appspot.com/ipl/logos/"+value+".png";
                                         return "<img src=\""+imgFilename+"\" />";
                                     },
-                                    width: 99,
+                                    width: 55,
                                     dataIndex: 'teamName',
                                     text: 'Logo'
                                 },
                                 {
                                     xtype: 'gridcolumn',
-                                    width: 161,
+                                    width: 160,
                                     dataIndex: 'teamName',
                                     text: 'TeamName'
                                 },
                                 {
                                     xtype: 'numbercolumn',
-                                    width: 52,
+                                    width: 50,
                                     dataIndex: 'matches',
                                     text: 'Matches'
                                 },
@@ -92,6 +82,7 @@ Ext.define('MyApp.view.LandingPage', {
                                 },
                                 {
                                     xtype: 'numbercolumn',
+                                    hidden: true,
                                     width: 38,
                                     dataIndex: 'nr',
                                     text: 'Nr'
@@ -104,6 +95,7 @@ Ext.define('MyApp.view.LandingPage', {
                                 },
                                 {
                                     xtype: 'numbercolumn',
+                                    hidden: true,
                                     width: 44,
                                     dataIndex: 'tied',
                                     text: 'Tied'
@@ -150,9 +142,6 @@ Ext.define('MyApp.view.LandingPage', {
                         {
                             xtype: 'gridpanel',
                             id: 'upcomingFixtures',
-                            maxWidth: 360,
-                            minHeight: 400,
-                            minWidth: 360,
                             autoScroll: true,
                             title: 'Upcoming Fixtures',
                             store: 'FixturesTableStore',
@@ -166,7 +155,7 @@ Ext.define('MyApp.view.LandingPage', {
                                         var imgFilename="http://find-business.appspot.com/ipl/logos/"+value+".png";
                                         return "<img src=\""+imgFilename+"\" />";
                                     },
-                                    width: 100,
+                                    width: 55,
                                     dataIndex: 'team1',
                                     text: 'Team1'
                                 },
@@ -176,7 +165,7 @@ Ext.define('MyApp.view.LandingPage', {
                                         var imgFilename="http://find-business.appspot.com/ipl/logos/"+value+".png";
                                         return "<img src=\""+imgFilename+"\" />";
                                     },
-                                    width: 100,
+                                    width: 55,
                                     dataIndex: 'team2',
                                     text: 'Team2'
                                 },
@@ -204,43 +193,34 @@ Ext.define('MyApp.view.LandingPage', {
                                         }
                                     }
                                 })
-                            ]
-                        },
-                        {
-                            xtype: 'panel',
-                            flex: 1,
-                            border: 0,
-                            minHeight: 400,
-                            style: '{background-color : gray}',
-                            autoScroll: true,
-                            layout: {
-                                align: 'stretch',
-                                type: 'vbox'
-                            },
-                            title: 'Action',
-                            items: [
+                            ],
+                            tools: [
                                 {
-                                    xtype: 'button',
-                                    height: 29,
-                                    maxWidth: 1024,
-                                    width: 269,
-                                    text: 'Run Predictor',
+                                    xtype: 'tool',
+                                    type: 'gear',
                                     listeners: {
                                         click: {
-                                            fn: me.onButtonClick,
+                                            fn: me.onToolClick,
                                             scope: me
                                         }
                                     }
                                 },
                                 {
-                                    xtype: 'button',
-                                    height: 29,
-                                    maxWidth: 1024,
-                                    width: 269,
-                                    text: 'Clear Predictions',
+                                    xtype: 'tool',
+                                    type: 'toggle',
                                     listeners: {
                                         click: {
-                                            fn: me.onButtonClick1,
+                                            fn: me.onToolClick1,
+                                            scope: me
+                                        }
+                                    }
+                                },
+                                {
+                                    xtype: 'tool',
+                                    type: 'help',
+                                    listeners: {
+                                        click: {
+                                            fn: me.onToolClick2,
                                             scope: me
                                         }
                                     }
@@ -262,13 +242,17 @@ Ext.define('MyApp.view.LandingPage', {
         e.column.getEditor().bindStore([team1,team2]);
     },
 
-    onButtonClick: function(button, e, options) {
+    onToolClick: function(tool, e, options) {
         var grid=Ext.ComponentQuery.query('#pointsTable')[0];
         var grid2=Ext.ComponentQuery.query('#upcomingFixtures')[0];
         var lineIndex=1;
         var formParamsIn="";
+        var selectedCount=0;
         Ext.each(grid2.getStore().data.items, function(item, index) {
-            var line=item.get('team1')+','+item.get('team2')+','+item.get('winner');
+            var line=item.get('team1')+','+item.get('team2')+','+item.get('winner');    
+            if(item.get('winner').length>0) {
+                selectedCount=selectedCount+1;
+            }
             var param="param"+lineIndex+"="+line+"&";
             lineIndex=lineIndex+1;
             formParamsIn=formParamsIn+param;    
@@ -287,14 +271,27 @@ Ext.define('MyApp.view.LandingPage', {
             writer: {type:'json'}
         });
         store.on('load', function(v,r,success) {
+            Ext.MessageBox.hide();
             if(success) {        
                 grid.getStore().loadRecords(r);
             }
+            Ext.MessageBox.hide();
         });
+        if(selectedCount<4) {    
+            return;
+        }    
+        Ext.MessageBox.show({
+            msg: 'Analyzing your request, please wait...',
+            progressText: 'Analyzing...',
+            width:300,
+            wait:true,
+            waitConfig: {interval:200}
+        });
+
         store.load({params: formParamsIn});
     },
 
-    onButtonClick1: function(button, e, options) {
+    onToolClick1: function(tool, e, options) {
         var grid=Ext.ComponentQuery.query('#pointsTable')[0];
         grid.getStore().load();
         var grid2=Ext.ComponentQuery.query('#upcomingFixtures')[0];
@@ -306,6 +303,10 @@ Ext.define('MyApp.view.LandingPage', {
             }
         });
         grid2.getStore().load();
+    },
+
+    onToolClick2: function(tool, e, options) {
+        console.log('Help');
     }
 
 });

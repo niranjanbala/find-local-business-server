@@ -28,6 +28,8 @@ Ext.define('MyApp.store.FixturesTableStore', {
             autoSync: true,
             storeId: 'MyJsonStore1',
             model: 'MyApp.model.FixturesModel',
+            clearOnPageLoad: false,
+            pageSize: 9,
             proxy: {
                 type: 'ajax',
                 url: 'http://find-business.appspot.com/ipl/list?kind=Fixtures',

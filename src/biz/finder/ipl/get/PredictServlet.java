@@ -76,7 +76,7 @@ public class PredictServlet extends HttpServlet {
 		Map<Team,Double> resultAnalysis = Predictor.analysis(pointTableMap, matches);
 		for (Entity e : pointsTable) {
 			Team team = Team.valueOf(String.valueOf(e.getProperty("teamName")));
-			e.setProperty("chances", resultAnalysis.get(team));
+			e.setProperty("chances", Math.min(100.0, resultAnalysis.get(team)));
 		}
 		resp.getWriter().println(Util.writeJSON(pointsTable));
 	}
