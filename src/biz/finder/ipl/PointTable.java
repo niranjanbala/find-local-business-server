@@ -95,5 +95,14 @@ public class PointTable {
 	public String getTeamName() {
 		return teamName;
 	}
-
+	public static int getNumberOfBalls(Float overs) {
+		int numberOfBalls=(int)((overs-overs.intValue())*10);		
+		return numberOfBalls+overs.intValue()*6;
+	}
+	public void computeNrr() {		
+		float forAvg=Float.valueOf(forRuns)/getNumberOfBalls(forOver)*6;
+		float aAvg=Float.valueOf(againstRuns)/getNumberOfBalls(againstOvers)*6;
+		this.netrr=forAvg-aAvg;
+	}	
 }
+
