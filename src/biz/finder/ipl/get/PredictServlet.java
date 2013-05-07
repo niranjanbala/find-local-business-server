@@ -34,7 +34,10 @@ public class PredictServlet extends HttpServlet {
 			if (par != null) {
 				String[] param = par.split(",");
 				if ((param.length == 3) && (!param[2].trim().isEmpty())) {
-					userPredictions.put(param[0] + "," + param[1], param[2]);
+					userPredictions.put(param[0] + "," + param[1], param[2]+",10");
+				}
+				if ((param.length > 3) && (!param[2].trim().isEmpty())) {
+					userPredictions.put(param[0] + "," + param[1], param[2]+","+param[3]);
 				}
 			}
 		}
@@ -55,7 +58,9 @@ public class PredictServlet extends HttpServlet {
 		int points;
 		for (String winner : userPredictions.values()) {
 			try {
-			Team winnerTeam = Team.valueOf(winner);
+			String input[]=winner.split(",");
+			Team winnerTeam = Team.valueOf(input[0]);
+			int margin=Integer.valueOf(input[1]);
 			points = ((Integer) pointTableMap.get(winnerTeam)).intValue();
 			pointTableMap.put(winnerTeam, Integer.valueOf(points + 2));
 			}catch(Exception e) {

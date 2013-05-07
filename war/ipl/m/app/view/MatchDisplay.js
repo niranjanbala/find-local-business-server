@@ -29,14 +29,21 @@ Ext.define('MyApp.view.MatchDisplay', {
         items: [
             {
                 xtype: 'matchinfopanel',
-                height: 181
+                height: 181,
+                id: 'matchInfoPanel'
             },
             {
                 xtype: 'label'
             },
             {
                 xtype: 'selectfield',
+                id: 'winner',
                 label: 'WINNER'
+            },
+            {
+                xtype: 'selectfield',
+                id: 'marginWin',
+                label: 'MARGIN'
             },
             {
                 xtype: 'tabpanel',
@@ -45,11 +52,7 @@ Ext.define('MyApp.view.MatchDisplay', {
                 items: [
                     {
                         xtype: 'container',
-                        title: 'Who'
-                    },
-                    {
-                        xtype: 'container',
-                        title: 'What'
+                        title: 'About'
                     }
                 ]
             },
@@ -77,19 +80,28 @@ Ext.define('MyApp.view.MatchDisplay', {
     },
 
     getMatchInfoPanel: function() {
-        return this.getItems().items[0];
+        return Ext.ComponentQuery.query(this.observableId +' > #matchInfoPanel')[0];
     },
 
-    getSelectField: function() {
-        return this.getItems().items[2];
+    getWinnerSelectField: function() {
+        return Ext.ComponentQuery.query(this.observableId +' > #winner')[0];
     },
 
     getValueString: function() {
         var team1=this.getMatchInfoPanel().team1;
         var team2=this.getMatchInfoPanel().team2;
-        var winner=this.getSelectField().getValue();
-        var line=team1+','+team2+','+winner;
+        var winner=this.getWinnerSelectField().getValue();
+        var margin=this.getMarginWinSelectField().getValue();
+        var line=team1+','+team2+','+winner+','+margin;
         return line;
+    },
+
+    getNavToolbar: function() {
+
+    },
+
+    getMarginWinSelectField: function() {
+        return Ext.ComponentQuery.query(this.observableId +' > #marginWin')[0];
     }
 
 });

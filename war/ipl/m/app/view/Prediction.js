@@ -17,6 +17,7 @@ Ext.define('MyApp.view.Prediction', {
     extend: 'Ext.Panel',
 
     config: {
+        id: 'predictionPanel',
         width: 326,
         items: [
             {

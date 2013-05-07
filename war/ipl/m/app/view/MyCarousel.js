@@ -28,19 +28,21 @@ Ext.define('MyApp.view.MyCarousel', {
     },
 
     onMainActiveItemChange: function(container, value, oldValue, options) {
-        if(container.getActiveIndex()===5){
+        var totalItems=container.getItems().length-2;
+        if(container.getActiveIndex()===totalItems){
             var formParamsIn="";
             var lineIndex=1;
             var items=container.getItems();
             Ext.each(items, function(i,index) {
                 var item=items.get(index);
-                if(index>0 && index<=5) {                
+                console.log(item);
+                if(index>0 && index<=totalItems && item.getValueString) {                
                     var line=item.getValueString();            
                     formParamsIn=formParamsIn+"param"+lineIndex+"="+line+"&";  
                     lineIndex=lineIndex+1;
                 }
             });    
-            var store=Ext.create("MyApp.store.PointsTableStore",{autoLoad:false});
+            var store=Ext.create("MyApp.store.PointTableStore",{autoLoad:false});
             store.setProxy({
                 type: 'rest',
                 api: {
@@ -53,12 +55,12 @@ Ext.define('MyApp.view.MyCarousel', {
                 writer: {type:'json'}
             });
             store.on('load', function(v,r,success) {        
-                items.get(6).unmask(); 
+                items.get(totalItems+1).unmask(); 
                 if(success) {        
-                    items.get(6).loadData(r);                
+                    items.get(totalItems+1).loadData(r);                
                 }            
             });
-            items.get(6).mask(); 
+            items.get(totalItems+1).mask(); 
             store.load({params: formParamsIn});
         }
     }

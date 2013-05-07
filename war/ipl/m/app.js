@@ -61,7 +61,18 @@ Ext.application({
                             text: match.team2,
                             value: match.team2
                         }];
-                        view.getSelectField().setOptions(teamOptions);                
+                        var marginWinOptions=[{
+                            text: '10 runs',
+                            value: 10
+                        }, {
+                            text: '20 runs',
+                            value: 20
+                        }, {
+                            text: '30 runs',
+                            value: 30
+                        }];
+                        view.getWinnerSelectField().setOptions(teamOptions);                
+                        view.getMarginWinSelectField().setOptions(marginWinOptions);
                         matchDisplay.push(view);
                     }
                 });
@@ -69,11 +80,6 @@ Ext.application({
                 matchDisplay.push(chart);
                 main.setItems(matchDisplay);
                 main.setActiveItem(0);
-                //now we set the title of the statusView component to say we loaded the json file
-                //statusView.setTitle('Static test.json file loaded');
-
-                //and finally we unmask the contentView so the content is viewable
-                //contentView.unmask();
             },
             failure: function() {
                 //contentView.unmask();
