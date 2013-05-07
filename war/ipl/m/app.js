@@ -70,6 +70,15 @@ Ext.application({
                         }, {
                             text: '30 runs',
                             value: 30
+                        }, {
+                            text: '40 runs',
+                            value: 40
+                        }, {
+                            text: '50 runs',
+                            value: 50
+                        }, {
+                            text: '60 runs',
+                            value: 60
                         }];
                         view.getWinnerSelectField().setOptions(teamOptions);                
                         view.getMarginWinSelectField().setOptions(marginWinOptions);
