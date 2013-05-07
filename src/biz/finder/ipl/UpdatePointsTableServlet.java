@@ -17,7 +17,7 @@ public class UpdatePointsTableServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
-		String url = "http://find-business.appspot.com/ipl/results.now";
+		String url = "http://find-business.appspot.com/ipl/results.now?a="+Math.random();
 		String resultString = "";
 		try {
 			resultString = new UrlRetriever().retrieve(url);			
