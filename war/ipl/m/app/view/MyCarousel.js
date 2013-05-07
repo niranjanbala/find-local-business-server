@@ -18,6 +18,7 @@ Ext.define('MyApp.view.MyCarousel', {
 
     config: {
         id: 'main',
+        ui: 'light',
         listeners: [
             {
                 fn: 'onMainActiveItemChange',

@@ -37,6 +37,41 @@ Ext.define('MyApp.view.MatchDisplay', {
             {
                 xtype: 'selectfield',
                 label: 'WINNER'
+            },
+            {
+                xtype: 'tabpanel',
+                docked: 'bottom',
+                style: 'padding-top:5px; padding-bottom:5px',
+                items: [
+                    {
+                        xtype: 'container',
+                        title: 'Who'
+                    },
+                    {
+                        xtype: 'container',
+                        title: 'What'
+                    }
+                ]
+            },
+            {
+                xtype: 'toolbar',
+                docked: 'top',
+                style: 'padding-top:5px; padding-bottom:5px',
+                items: [
+                    {
+                        xtype: 'button',
+                        width: 148,
+                        icon: 'http://find-business.appspot.com/ipl/images/previous48.png',
+                        text: 'BACK'
+                    },
+                    {
+                        xtype: 'button',
+                        width: 146,
+                        icon: 'http://find-business.appspot.com/ipl/images/next48.png',
+                        iconAlign: 'right',
+                        text: 'NEXT'
+                    }
+                ]
             }
         ]
     },
