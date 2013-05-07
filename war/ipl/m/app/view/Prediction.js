@@ -21,8 +21,24 @@ Ext.define('MyApp.view.Prediction', {
         width: 326,
         items: [
             {
+                xtype: 'toolbar',
+                docked: 'top',
+                id: 'navigator2',
+                items: [
+                    {
+                        xtype: 'button',
+                        id: 'previous',
+                        itemId: 'mybutton2',
+                        width: 143,
+                        icon: 'http://find-business.appspot.com/ipl/images/previous48.png',
+                        text: 'BACK'
+                    }
+                ]
+            },
+            {
                 xtype: 'spacefilling',
                 height: 300,
+                id: 'chart',
                 width: 320,
                 series: [
                     {
@@ -51,21 +67,35 @@ Ext.define('MyApp.view.Prediction', {
             },
             {
                 xtype: 'selectfield',
+                id: 'selectedTeam',
                 itemId: 'myselectfield1',
                 label: 'Select Team',
                 labelWidth: '35%',
                 displayField: 'teamName',
                 store: 'pointTableStore',
                 valueField: 'teamName'
+            },
+            {
+                xtype: 'label',
+                html: 'Select a team to see chances of qualifying.'
             }
         ],
         listeners: [
             {
+                fn: 'onPreviousTap',
+                event: 'tap',
+                delegate: '#previous'
+            },
+            {
                 fn: 'onMyselectfield1Change',
                 event: 'change',
-                delegate: '#myselectfield1'
+                delegate: '#selectedTeam'
             }
         ]
+    },
+
+    onPreviousTap: function(button, e, options) {
+        Ext.ComponentQuery.query('#main')[0].previous();
     },
 
     onMyselectfield1Change: function(selectfield, newValue, oldValue, options) {
@@ -73,13 +103,13 @@ Ext.define('MyApp.view.Prediction', {
     },
 
     loadData: function(records) {
-        var selectedTeam=this.getItems().items[1].getValue();
+        var selectedTeam=Ext.ComponentQuery.query(this.observableId +' > #selectedTeam')[0].getValue();
         this.records=records;
         this.setValueForSeries(selectedTeam);
     },
 
     setValueForSeries: function(teamName) {
-        var series=this.getItems().items[0].getSeries()[0];
+        var series=Ext.ComponentQuery.query(this.observableId +' > #chart')[0].getSeries()[0];
         Ext.each(this.records,function(record) {    
             if(record.get('teamName')===teamName) {
                 var chances=record.get('chances');    
@@ -106,6 +136,10 @@ Ext.define('MyApp.view.Prediction', {
                 series.setColors(colors);
             }
         });
+    },
+
+    getPreviousButton: function() {
+        return Ext.ComponentQuery.query(this.observableId +' > #navigator2')[0].getItems().items[0];
     }
 
 });

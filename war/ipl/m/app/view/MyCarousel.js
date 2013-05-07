@@ -29,13 +29,16 @@ Ext.define('MyApp.view.MyCarousel', {
 
     onMainActiveItemChange: function(container, value, oldValue, options) {
         var totalItems=container.getItems().length-2;
+        //container.getActiveItem().getPreviousButton().setDisabled(false);
+        if(container.getActiveIndex()===0) {   
+            //container.getActiveItem().getPreviousButton().setDisabled(true);
+        }
         if(container.getActiveIndex()===totalItems){
             var formParamsIn="";
             var lineIndex=1;
             var items=container.getItems();
             Ext.each(items, function(i,index) {
                 var item=items.get(index);
-                console.log(item);
                 if(index>0 && index<=totalItems && item.getValueString) {                
                     var line=item.getValueString();            
                     formParamsIn=formParamsIn+"param"+lineIndex+"="+line+"&";  

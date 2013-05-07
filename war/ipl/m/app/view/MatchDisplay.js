@@ -33,7 +33,8 @@ Ext.define('MyApp.view.MatchDisplay', {
                 id: 'matchInfoPanel'
             },
             {
-                xtype: 'label'
+                xtype: 'label',
+                html: 'Please pick a winner and margin of victory.'
             },
             {
                 xtype: 'selectfield',
@@ -59,16 +60,21 @@ Ext.define('MyApp.view.MatchDisplay', {
             {
                 xtype: 'toolbar',
                 docked: 'top',
+                id: 'navigator',
                 style: 'padding-top:5px; padding-bottom:5px',
                 items: [
                     {
                         xtype: 'button',
+                        id: 'back',
+                        itemId: 'mybutton',
                         width: 148,
                         icon: 'http://find-business.appspot.com/ipl/images/previous48.png',
                         text: 'BACK'
                     },
                     {
                         xtype: 'button',
+                        id: 'next',
+                        itemId: 'mybutton1',
                         width: 146,
                         icon: 'http://find-business.appspot.com/ipl/images/next48.png',
                         iconAlign: 'right',
@@ -76,7 +82,27 @@ Ext.define('MyApp.view.MatchDisplay', {
                     }
                 ]
             }
+        ],
+        listeners: [
+            {
+                fn: 'onBackTap',
+                event: 'tap',
+                delegate: '#back'
+            },
+            {
+                fn: 'onNextTap',
+                event: 'tap',
+                delegate: '#next'
+            }
         ]
+    },
+
+    onBackTap: function(button, e, options) {
+        Ext.ComponentQuery.query('#main')[0].previous();
+    },
+
+    onNextTap: function(button, e, options) {
+        Ext.ComponentQuery.query('#main')[0].next();
     },
 
     getMatchInfoPanel: function() {
@@ -96,12 +122,16 @@ Ext.define('MyApp.view.MatchDisplay', {
         return line;
     },
 
-    getNavToolbar: function() {
-
+    getNextButton: function() {
+        return Ext.ComponentQuery.query(this.observableId +' > #navigator')[0].getItems().items[1];
     },
 
     getMarginWinSelectField: function() {
         return Ext.ComponentQuery.query(this.observableId +' > #marginWin')[0];
+    },
+
+    getPreviousButton: function() {
+        return Ext.ComponentQuery.query(this.observableId +' > #navigator')[0].getItems().items[0];
     }
 
 });
