@@ -50,14 +50,14 @@
      * 
      * This is location of your Sencha Touch 2 application, relative to this configuration file.
      */
-    "inputPath": "./",
+    "inputPath": "D:\NIRANJAN\PERSONAL\predictor\mobile\predictor",
 
     /**
      * @cfg {String} outputPath
      * 
      * This is where the built application file with be saved. Make sure that output path is not in your input path, you may get into endless recursive copying
      */
-    "outputPath": "../build/",
+    "outputPath": "D:\NIRANJAN\PERSONAL\predictor\mobile\predictor/build/",
 
     /**
      * @cfg {String} configuration

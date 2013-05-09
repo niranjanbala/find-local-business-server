@@ -31,6 +31,7 @@ Ext.application({
         'Prediction'
     ],
     name: 'MyApp',
+    startupImage: 'http://find-business.appspot.com/ipl/splash.png',
 
     launch: function() {
         Ext.Ajax.request({
