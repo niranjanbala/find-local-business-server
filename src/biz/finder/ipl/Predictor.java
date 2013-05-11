@@ -44,13 +44,14 @@ public class Predictor {
 
 			for (Team t : Team.values()) {
 				for (Team t1 : Team.values()) {
+					if(t1.equals(t)) continue;
 					if(results.get(t).compareTo(results.get(t1))>0) {
 						rankings.put(t, rankings.get(t) + 1);
 					}
 				}
 			}
 			for (Team t : Team.values()) {
-				if (rankings.get(t) >= 5) {
+				if (rankings.get(t) > 5) {
 					qualify.put(t, qualify.get(t) + 1);
 				}
 			}

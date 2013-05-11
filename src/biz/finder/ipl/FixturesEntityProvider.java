@@ -29,7 +29,7 @@ public class FixturesEntityProvider extends AbstractEntityProvider {
 				Query.FilterOperator.EQUAL, team2.name()));
 		Query.CompositeFilter filter = new Query.CompositeFilter(
 				Query.CompositeFilterOperator.AND, filters);
-		Entity pointTableRow = datastore.prepare(
+		Entity pointTableRow = datastore==null?null:datastore.prepare(
 				new Query(getKind()).setFilter(filter)).asSingleEntity();
 		if (pointTableRow == null) {
 			pointTableRow = new Entity(getKind(), index);

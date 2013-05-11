@@ -1,5 +1,6 @@
 package biz.finder.ipl.get;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -31,57 +32,64 @@ public class PredictServlet extends HttpServlet {
 			throws IOException {
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
-		Map<String,String> userPredictions = new HashMap<String,String>();
+		Map<String, String> userPredictions = new HashMap<String, String>();
 		for (int i = 1; i <= 10; i++) {
 			String par = req.getParameter("param" + i);
 			if (par != null) {
 				String[] param = par.split(",");
 				if ((param.length == 3) && (!param[2].trim().isEmpty())) {
-					userPredictions.put(param[0] + "," + param[1], param[2]+",10");
+					userPredictions.put(param[0] + "," + param[1], param[2]
+							+ ",10");
 				}
 				if ((param.length > 3) && (!param[2].trim().isEmpty())) {
-					userPredictions.put(param[0] + "," + param[1], param[2]+","+param[3]);
+					userPredictions.put(param[0] + "," + param[1], param[2]
+							+ "," + param[3]);
 				}
 			}
 		}
 		resp.setContentType("text/json; charset=utf-8");
 		resp.setHeader("Cache-Control", "no-cache");
-		List<Entity> pointsTable = new PointsTableEntityProvider().findAll(datastore,
-				null, 10);
+		List<Entity> pointsTable = new PointsTableEntityProvider().findAll(
+				datastore, null, 10);
 		List<Entity> fixtures = new FixturesEntityProvider().findAll(datastore,
 				new Query.FilterPredicate("status", Query.FilterOperator.EQUAL,
 						"PENDING"), 100);
-		Map<Team,PointTable> pointTableMap = new HashMap<Team,PointTable>();		
+		Map<Team, Double> resultAnalysis = doFoo(fixtures, userPredictions,
+				pointsTable);
+		for (Entity e : pointsTable) {
+			Team team = Team.valueOf(String.valueOf(e.getProperty("teamName")));
+			e.setProperty("chances", Math.min(100.0, resultAnalysis.get(team)));
+		}
+		resp.getWriter().println(Util.writeJSON(pointsTable));
+	}
+
+	public static Map<Team, Double> doFoo(List<Entity> fixtures,
+			Map<String, String> userPredictions, List<Entity> pointsTable)
+			throws FileNotFoundException {
+
+		Map<Team, PointTable> pointTableMap = new HashMap<Team, PointTable>();
 		for (Entity e : pointsTable) {
 			Team team = Team.valueOf(String.valueOf(e.getProperty("teamName")));
 			pointTableMap.put(team, PointTable.fromEntity(e));
 		}
-		
 
 		Set<Entry<String, String>> entrySet = userPredictions.entrySet();
-		for(Entry<String,String> entry:entrySet) {
-			String teams[]=entry.getKey().split(",");
+		for (Entry<String, String> entry : entrySet) {
+			String teams[] = entry.getKey().split(",");
 			Team team1 = Team.valueOf(teams[0]);
 			Team team2 = Team.valueOf(teams[1]);
-			String winnerMargin[]=entry.getValue().split(",");
+			String winnerMargin[] = entry.getValue().split(",");
 			Team winner = Team.valueOf(winnerMargin[0]);
-			int margin=Integer.valueOf(winnerMargin[1]);
-			Team loser=team1.equals(winner)?team1:team2;
-			pointTableMap.get(winner).updateMatchResult(2, Predictor.WINNING_TEAM_RUNS,  Predictor.OVERS,  Predictor.WINNING_TEAM_RUNS-margin, Predictor.OVERS);
-			pointTableMap.get(loser).updateMatchResult(0,  Predictor.WINNING_TEAM_RUNS-margin, Predictor.OVERS,  Predictor.WINNING_TEAM_RUNS, Predictor.OVERS);
+			int margin = Integer.valueOf(winnerMargin[1]);
+			Team loser = team1.equals(winner) ? team1 : team2;
+			pointTableMap.get(winner).updateMatchResult(2,
+					Predictor.WINNING_TEAM_RUNS, Predictor.OVERS,
+					Predictor.WINNING_TEAM_RUNS - margin, Predictor.OVERS);
+			pointTableMap.get(loser).updateMatchResult(0,
+					Predictor.WINNING_TEAM_RUNS - margin, Predictor.OVERS,
+					Predictor.WINNING_TEAM_RUNS, Predictor.OVERS);
 		}
-//		for (String winner : userPredictions.values()) {
-//			try {
-//			String input[]=winner.split(",");
-//			Team winnerTeam = Team.valueOf(input[0]);
-//			int margin=Integer.valueOf(input[1]);
-//			//int points= pointTableMap.get(winnerTeam).getPoints();
-//			//pointTableMap.put(winnerTeam, Integer.valueOf(points + 2));
-//			}catch(Exception e) {
-//				//eat
-//			}
-//		}
-		Map<Integer,Team[]> matches = new HashMap<Integer,Team[]>();
+		Map<Integer, Team[]> matches = new HashMap<Integer, Team[]>();
 		int index = 0;
 		String team1;
 		for (Entity e : fixtures) {
@@ -92,11 +100,8 @@ public class PredictServlet extends HttpServlet {
 						new Team[] { Team.valueOf(team1), Team.valueOf(team2) });
 			}
 		}
-		Map<Team,Double> resultAnalysis = Predictor.analysis(pointTableMap, matches);
-		for (Entity e : pointsTable) {
-			Team team = Team.valueOf(String.valueOf(e.getProperty("teamName")));
-			e.setProperty("chances", Math.min(100.0, resultAnalysis.get(team)));
-		}
-		resp.getWriter().println(Util.writeJSON(pointsTable));
+		Map<Team, Double> resultAnalysis = Predictor.analysis(pointTableMap,
+				matches);
+		return resultAnalysis;
 	}
 }
