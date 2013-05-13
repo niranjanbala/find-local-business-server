@@ -29,15 +29,17 @@ public class ListServlet extends HttpServlet {
 		resp.setHeader("Cache-Control", "no-cache");
 
 		String kind = req.getParameter("kind");
+		String count = req.getParameter("count");
+		int maxLimit=count==null || count.isEmpty() ?10:Integer.valueOf(count);
 		if (kind.equals(PointsTableEntityProvider.POINTS_TABLE)) {
 			IEntityProvider entityProvider = new PointsTableEntityProvider();
-			List<Entity> entities = entityProvider.findAll(datastore,null,10);
+			List<Entity> entities = entityProvider.findAll(datastore,null,maxLimit);
 			resp.getWriter().println(Util.writeJSON(entities));
 		}
 		else {
 			IEntityProvider entityProvider = new FixturesEntityProvider();
 			List<Entity> entities=entityProvider.findAll(datastore,(new FilterPredicate("status",
-					FilterOperator.EQUAL, "PENDING")),10);
+					FilterOperator.EQUAL, "PENDING")),maxLimit);
 			Util.writeJSON(entities);
 			resp.getWriter().println(Util.writeJSON(entities));
 		}
