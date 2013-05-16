@@ -22,11 +22,11 @@ public class PredictServletTest {
 
 	public static void main(String[] args) throws Exception {
 		Map<String, String> userPredictions = new HashMap<String, String>();
-		userPredictions.put("Sunrisers_Hyderabad,Rajasthan_Royals", "Rajasthan_Royals,10");
-		userPredictions.put("Kings_XI_Punjab,Delhi_Daredevils", "Kings_XI_Punjab,60");
-		userPredictions.put("Royal_Challengers_Bangalore,Chennai_Super_Kings", "Chennai_Super_Kings,10");
-		userPredictions.put("Kings_XI_Punjab,Mumbai_Indians", "Kings_XI_Punjab,60");
-		userPredictions.put("Sunrisers_Hyderabad,Kolkata_Knight_Riders", "Rajasthan_Royals,10");
+		userPredictions.put("Sunrisers_Hyderabad,Rajasthan_Royals", "Rajasthan_Royals,30");
+		userPredictions.put("Kings_XI_Punjab,Delhi_Daredevils", "Kings_XI_Punjab,40");
+		userPredictions.put("Royal_Challengers_Bangalore,Chennai_Super_Kings", "Chennai_Super_Kings,30");
+		userPredictions.put("Kings_XI_Punjab,Mumbai_Indians", "Kings_XI_Punjab,40");
+		userPredictions.put("Sunrisers_Hyderabad,Kolkata_Knight_Riders", "Rajasthan_Royals,30");
 		List<Entity> fixtures = readFixturesTable();
 		List<Entity> pointsTable = readPointTable();
 		Map<Team, Double> result = PredictServlet.doFoo(fixtures, userPredictions, pointsTable);
