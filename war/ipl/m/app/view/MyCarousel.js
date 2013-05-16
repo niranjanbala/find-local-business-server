@@ -28,44 +28,7 @@ Ext.define('MyApp.view.MyCarousel', {
     },
 
     onMainActiveItemChange: function(container, value, oldValue, options) {
-        var totalItems=container.getItems().length-2;
-        //container.getActiveItem().getPreviousButton().setDisabled(false);
-        if(container.getActiveIndex()===0) {   
-            //container.getActiveItem().getPreviousButton().setDisabled(true);
-        }
-        if(container.getActiveIndex()===totalItems){
-            var formParamsIn="";
-            var lineIndex=1;
-            var items=container.getItems();
-            Ext.each(items, function(i,index) {
-                var item=items.get(index);
-                if(index>0 && index<=totalItems && item.getValueString) {                
-                    var line=item.getValueString();            
-                    formParamsIn=formParamsIn+"param"+lineIndex+"="+line+"&";  
-                    lineIndex=lineIndex+1;
-                }
-            });    
-            var store=Ext.create("MyApp.store.PointTableStore",{autoLoad:false});
-            store.setProxy({
-                type: 'rest',
-                api: {
-                    read: "http://find-business.appspot.com/ipl/predict"
-                },
-                actionMethods: {
-                    read: 'POST'
-                },
-                reader: {type:'json'},
-                writer: {type:'json'}
-            });
-            store.on('load', function(v,r,success) {        
-                items.get(totalItems+1).unmask(); 
-                if(success) {        
-                    items.get(totalItems+1).loadData(r);                
-                }            
-            });
-            items.get(totalItems+1).mask(); 
-            store.load({params: formParamsIn});
-        }
+        MyApp.controller.Predictor.analyze(container);
     }
 
 });

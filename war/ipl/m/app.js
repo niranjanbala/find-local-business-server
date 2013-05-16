@@ -18,6 +18,10 @@ Ext.Loader.setConfig({
 });
 
 Ext.application({
+
+    requires: [
+        'MyApp.controller.Predictor'
+    ],
     models: [
         'PointTableModel'
     ],
@@ -35,9 +39,20 @@ Ext.application({
 
     launch: function() {
         Ext.Ajax.request({
+            url: 'http://find-business.appspot.com/ipl/list?kind=PointsTable',
+
+            //then we define a success method, which is called once the ajax request is successful
+            success: function(response) {
+                MyApp.app.pointTable=Ext.decode(response.responseText);
+            },
+            failure: function() {
+                //contentView.unmask();
+            }
+        });
+        Ext.Ajax.request({
             //first we give it the URL of the request. take not that this can only be local to the web server
             //you are on
-            url: 'http://find-business.appspot.com/ipl/list?kind=Fixtures',
+            url: 'http://find-business.appspot.com/ipl/list?kind=Fixtures&count=12',
 
             //then we define a success method, which is called once the ajax request is successful
             success: function(response) {
@@ -45,11 +60,11 @@ Ext.application({
                 //responseText which is the text of the file we just loaded. so we call setHtml which
                 //will update the contentView with the text of the response
                 //contentView.setHtml(response.responseText);
-                var matches=Ext.decode(response.responseText);        
+                MyApp.app.matches=Ext.decode(response.responseText);        
                 var main=Ext.ComponentQuery.query('#main')[0];
                 var matchDisplay = [];
                 var matchLimit=5;       
-                Ext.each(matches, function(match,index) {
+                Ext.each(MyApp.app.matches, function(match,index) {
                     if(index<matchLimit) {
                         var view=Ext.create('MyApp.view.MatchDisplay');
                         view.getMatchInfoPanel().team1=match.team1;  
