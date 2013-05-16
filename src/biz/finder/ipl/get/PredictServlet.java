@@ -81,7 +81,7 @@ public class PredictServlet extends HttpServlet {
 			String winnerMargin[] = entry.getValue().split(",");
 			Team winner = Team.valueOf(winnerMargin[0]);
 			int margin = Integer.valueOf(winnerMargin[1]);
-			Team loser = team1.equals(winner) ? team1 : team2;
+			Team loser = team1.equals(winner) ? team2 : team1;
 			pointTableMap.get(winner).updateMatchResult(2,
 					Predictor.WINNING_TEAM_RUNS, Predictor.OVERS,
 					Predictor.WINNING_TEAM_RUNS - margin, Predictor.OVERS);

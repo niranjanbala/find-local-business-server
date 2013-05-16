@@ -24,7 +24,7 @@ public class Predictor {
 			qualify.put(t, Double.valueOf(0.0D));
 		}
 		double TOTAL_POSSIBILITIES = Math.pow(2.0D, matchesRemaining);	
-		for (int i = 0; i <= TOTAL_POSSIBILITIES; i++) {
+		for (int i = 0; i < TOTAL_POSSIBILITIES; i++) {
 			String binary= padLeft(Integer.toBinaryString(i), matchesRemaining);
 			Map<Team, Integer> rankings = new HashMap<Team, Integer>();
 			Map<Team, PointTable> results = new HashMap<Team, PointTable>();

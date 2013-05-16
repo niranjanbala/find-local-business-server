@@ -148,6 +148,12 @@ public class PointTable implements Comparable<PointTable>{
 
 	public void updateMatchResult(int pointIncrement, int runsFor,
 			float oversFor, int runsAgainst, float overAgainst) {
+		this.matches++;
+		if(pointIncrement==0) {
+			this.lost++;	
+		}else {		
+			this.won++;
+		}
 		this.points += pointIncrement;
 		this.forRuns += runsFor;
 		this.forOver += oversFor;

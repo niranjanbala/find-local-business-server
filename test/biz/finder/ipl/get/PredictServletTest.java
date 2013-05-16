@@ -11,6 +11,7 @@ import biz.finder.ipl.FixturesEntityProvider;
 import biz.finder.ipl.IEntityProvider;
 import biz.finder.ipl.PointTable;
 import biz.finder.ipl.PointsTableEntityProvider;
+import biz.finder.ipl.Team;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -21,11 +22,17 @@ public class PredictServletTest {
 
 	public static void main(String[] args) throws Exception {
 		Map<String, String> userPredictions = new HashMap<String, String>();
-		userPredictions.put("Pune_Warriors,Mumbai_Indians", "Mumbai_Indians,10");
-		userPredictions.put("Royal_Challengers_Bangalore,Kings_XI_Punjab", "Royal_Challengers_Bangalore,10");
+		userPredictions.put("Sunrisers_Hyderabad,Rajasthan_Royals", "Rajasthan_Royals,10");
+		userPredictions.put("Kings_XI_Punjab,Delhi_Daredevils", "Kings_XI_Punjab,60");
+		userPredictions.put("Royal_Challengers_Bangalore,Chennai_Super_Kings", "Chennai_Super_Kings,10");
+		userPredictions.put("Kings_XI_Punjab,Mumbai_Indians", "Kings_XI_Punjab,60");
+		userPredictions.put("Sunrisers_Hyderabad,Kolkata_Knight_Riders", "Rajasthan_Royals,10");
 		List<Entity> fixtures = readFixturesTable();
 		List<Entity> pointsTable = readPointTable();
-		PredictServlet.doFoo(fixtures, userPredictions, pointsTable);
+		Map<Team, Double> result = PredictServlet.doFoo(fixtures, userPredictions, pointsTable);
+		for(Team t:Team.values()) {
+			System.out.println(t.name()+"-"+result.get(t));
+		}
 	}
 
 	public static List<Entity> readPointTable() throws Exception {
